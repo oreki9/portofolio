@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Portofolio</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/stimulus/dist/stimulus.umd.js"></script>
+    <script>
+      (() => {
+        const application = Stimulus.Application.start()
+      
+        application.register("slider", class extends Stimulus.Controller {
+          static get targets() {
+            return [ "scrollContainer", "image", "indicator" ]
+          }
+          initialize() {
+            this.observer = new IntersectionObserver(this.onIntersectionObserved.bind(this), {
+              root: this.scrollContainerTarget,
+              threshold: 0.5
+            })
+            this.imageTargets.forEach(image => {
+              this.observer.observe(image)
+            })
+          }
+          onIntersectionObserved(entries) {
+            entries.forEach(entry => {
+              if (entry.intersectionRatio > 0.5) {
+                const intersectingIndex = this.imageTargets.indexOf(entry.target)
+                this.indicatorTargets[intersectingIndex].classList.add("bg-blue-900")
+              }
+              else { 
+                const intersectingIndex = this.imageTargets.indexOf(entry.target)
+                this.indicatorTargets[intersectingIndex].classList.remove("bg-blue-900")
+              }
+            })
+          }
+          scrollTo() {
+            const imageId = event.target.dataset.imageId
+            const imageElement = document.getElementById(imageId)
+            const imageCoordinates = imageElement.getBoundingClientRect()
+            this.scrollContainerTarget.scrollTo({ left: (this.scrollContainerTarget.scrollLeft + imageCoordinates.left), top: false, behavior: "smooth" })
+          }
+        })
+      })()
+	  document.addEventListener("DOMContentLoaded", function() {
+	  var lazyloadImages = document.querySelectorAll("img.lazy");    
+	  var lazyloadThrottleTimeout;
+	  
+	  function lazyload () {
+		if(lazyloadThrottleTimeout) {
+		  clearTimeout(lazyloadThrottleTimeout);
+		}    
+		
+		lazyloadThrottleTimeout = setTimeout(function() {
+			var scrollTop = window.pageYOffset;
+			lazyloadImages.forEach(function(img) {
+				if(img.offsetTop < (window.innerHeight + scrollTop)) {
+				  img.src = img.dataset.src;
+				  img.classList.remove('lazy');
+				}
+			});
+			if(lazyloadImages.length == 0) { 
+			  document.removeEventListener("scroll", lazyload);
+			  window.removeEventListener("resize", lazyload);
+			  window.removeEventListener("orientationChange", lazyload);
+			}
+		}, 20);
+	  }
+	  
+	  document.addEventListener("scroll", lazyload);
+	  window.addEventListener("resize", lazyload);
+	  window.addEventListener("orientationChange", lazyload);
+	});
+    </script>
+    <style type="text/css">
+      .gallery-item {
+        scroll-snap-align: start;
+      }
+      .gallery {
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+      }
+    </style>
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+	<link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <main>
+		<div class="relative">
+		  <div class="relative md:fixed w-full md:w-1/5 min-h-1/5 inset-0" style="background-color: #212529;">
+		  <div class="nes-container is-rounded is-dark" style="margin-top: 120px;font-size: 9px;">
+			<div style="height:50px"></div>
+			<div class="flex justify-center -mt-8">
+				<img src="https://oreki9.github.io/passage/user.png" class="rounded-full border-solid border-white border-2 -mt-3">		
+			</div>
+			<div class="text-center px-3 pb-6 pt-2">
+				<h3 class="text-white text bold" style="font-size:12px">Ricky Trisna Agusta</h3>
+				<p class="mt-2 font-light text-white">Prototype Programmer dan Penggemar Game AI</p></br>Mail : topikuputih@gmail.com</br>Phone : 083122509643
+			</div>
+			<div>
+			<div class="flex justify-center pb-3 text-white">
+			  <div class="text-center mr-3 border-r pr-3">
+				<a href="https://github.com/oreki9">Github</a>
+			  </div>
+			  <div class="text-center">
+				<a href="https://www.linkedin.com/in/ricky-trisna-agusta-3878bb183/">Linkedin</a>
+			  </div>
+			</div>
+			</div>
+		</div>
+		<div class="nes-container with-title is-dark" style="font-size: 9px;">
+		<h3 class="text-white text bold title" style="font-size:12px">Certificate</h3>
+		<div id="lists" class="item">
+		<div class="lists">
+			  <ul class="nes-list is-circle">
+				<li><a href="https://www.coursera.org/account/accomplishments/specialization/certificate/4473H3PT6BXS">Google IT Automation with Python Specialization</a></li>
+				<li><a href="https://www.coursera.org/account/accomplishments/specialization/certificate/TJPNRE2RARXL">AWS Fundamentals Specialization</a></li>
+			  </ul>
+			</div>
+		</div>
+		</div>
+		  </div>
+		  <div class="w-full md:w-4/5 ml-auto">
+		  <h1 class="text-2xl text-gray-900 text-center mb-4">Portofolio</h1>
+		  <div><h4 class="text-gray-900 text-center mb-4" style="border-bottom: 1px solid black;font-size:12px">Saya merupakan Programmer yang Tertarik pada Game Developtment, AI, Dan Web Security</br> Universitas Dian Nuswantoro </br> Hobbies: Prototyping Developing, Self-Help Book </br> Programming Languages: Csharp, Python, Kotlin, php, Javascript, Wasm</br></br></h4></div>
+			<div class="flex flex-col my-10" data-controller="slider" style="border-bottom: 1px solid black;">
+			<div class="nes-container is-dark with-title" style="margin-left: auto;margin-right: auto;width:70%;font-size: 10px;">
+			  <a class="title">Passage : Trending News/Post Platform</a>
+			  <a>Platform yang mengumpulkan post/news yang sedang trending dan menampilkanya sesuai dengan
+				kategori yang dipilih tiap user, menerapkan load balancer free hosting php, klasifikasi naive bayes,
+				dan python code untuk maintenance platform.</a>
+			</div>
+			<div class="nes-balloon from-left nes-pointer md:w-4/5" style="margin-top: 30px;margin-left: auto;margin-right: auto;">
+			<div class="flex overflow-x-scroll hide-scroll-bar overscroll-x-contain gallery" data-slider-target="scrollContainer">
+			  <div class="w-96 h-110 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="1">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="2">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="3">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="4">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="5">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="6">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			</div>
+			<div class="flex mx-auto my-8">
+			  <ul class="flex justify-center">
+				<!-- Note that we have one <li> for each image in our gallery -->
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="1" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="2" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="3" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="4" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="5" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="6" data-action="click->slider#scrollTo"></li>
+			  </ul>
+			</div>
+			</div>
+		  </div>
+		  <div class="flex flex-col my-10" data-controller="slider" style="border-bottom: 1px solid black;">
+			<div class="nes-container is-dark with-title" style="margin-left: auto;margin-right: auto;width:70%;font-size: 10px;">
+			  <a class="title">Indonesian Food Match Three Game</a>
+			  <a>Game match three dengan resep makanan tradisional yang bisa didapatkan jika user dapat menyelesaikan level.</a>
+			</div>
+			<div class="nes-balloon from-left nes-pointer md:w-4/5" style="margin-top: 30px;margin-left: auto;margin-right: auto;">
+			<div class="flex overflow-x-scroll hide-scroll-bar overscroll-x-contain gallery" data-slider-target="scrollContainer">
+			  <div class="w-96 h-110 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="1">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="2">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="3">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="4">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="5">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="6">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			</div>
+			<div class="flex mx-auto my-8">
+			  <ul class="flex justify-center">
+				<!-- Note that we have one <li> for each image in our gallery -->
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="1" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="2" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="3" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="4" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="5" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="6" data-action="click->slider#scrollTo"></li>
+			  </ul>
+			</div>
+			</div>
+		  </div>
+		  <div class="flex flex-col my-10" data-controller="slider" style="border-bottom: 1px solid black;">
+			<div class="nes-container is-dark with-title" style="margin-left: auto;margin-right: auto;width:70%;font-size: 10px;">
+			  <a class="title">Forbit : Minimal Javascript</a>
+			  <a>Framework untuk membuat minimalist javascript code hanya dengan 16 karakter, terdapat transcoder
+				compiler yang mengubah code menjadi 4bit file untuk memperkecil size file.</a>
+			</div>
+			<div class="nes-balloon from-left nes-pointer md:w-4/5" style="margin-top: 30px;margin-left: auto;margin-right: auto;">
+			<div class="flex overflow-x-scroll hide-scroll-bar overscroll-x-contain gallery" data-slider-target="scrollContainer">
+			  <div class="w-96 h-110 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="1">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="2">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="3">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="4">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="5">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="6">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			</div>
+			<div class="flex mx-auto my-8">
+			  <ul class="flex justify-center">
+				<!-- Note that we have one <li> for each image in our gallery -->
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="1" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="2" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="3" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="4" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="5" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="6" data-action="click->slider#scrollTo"></li>
+			  </ul>
+			</div>
+			</div>
+		  </div>
+		  <div class="flex flex-col my-10" data-controller="slider" style="border-bottom: 1px solid black;">
+			<div class="nes-container is-dark with-title" style="margin-left: auto;margin-right: auto;width:70%;font-size: 10px;">
+			  <a class="title">Batik Virtual Dressing Room</a>
+			  <a>Aplikasi mobile yang dapat mengubah baju dalam foto yang dipotret user menjadi batik dengan machine learning.</a>
+			</div>
+			<div class="nes-balloon from-left nes-pointer md:w-4/5" style="margin-top: 30px;margin-left: auto;margin-right: auto;">
+			<div class="flex overflow-x-scroll hide-scroll-bar overscroll-x-contain gallery" data-slider-target="scrollContainer">
+			  <div class="w-96 h-110 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="1">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="2">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="3">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="4">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="5">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			  <div class="w-96 h-64 px-4 flex-shrink-0 gallery-item" data-slider-target="image" id="6">
+				<img class="lazy" data-src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" />
+			  </div>
+			</div>
+			<div class="flex mx-auto my-8">
+			  <ul class="flex justify-center">
+				<!-- Note that we have one <li> for each image in our gallery -->
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="1" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="2" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="3" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="4" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="5" data-action="click->slider#scrollTo"></li>
+				<li class="h-6 w-6 rounded-full mx-2 cursor-pointer bg-gray-500" data-slider-target="indicator" data-image-id="6" data-action="click->slider#scrollTo"></li>
+			  </ul>
+			</div>
+			</div>
+		  </div>
+		  
+		  </div>
+		  <div class="w-full md:w-4/5 ml-auto flex justify-center">
+		  <section class="nes-container with-title" style="width:90%"><h3 class="title">Experience</h3> <div id="lists" class="item">
+			<div class="lists">
+			  <ul class="nes-list is-circle">
+				<li><div>Game Developer in Sidji</div></li>
+				<div style="font-size:12px">Programmer tunggal bekerjasama dengan artist sidji mengembangkan mobile game sebagai proposal
+				pitch untuk perusahaan lain, Berdiskusi dengan Artist tentang Resolusi Game Dan Penempatan Artistic oleh Artist</div></br>
+				<li><div>Mobile Developer Student in Bangkit</div></li>
+				<div style="font-size:12px">Belajar Mobile developtment dengan materi yang sudah disiapkan google sebagai persiapan tes sertifikat android associate developer dan menjadi project manager dimana mendesain dan mengembangkan aplikasi dengan tujuan menghasilkan produk yang akan didanai oleh bangkit.</div>
+			  </ul>
+			</div></div></section>
+		  
+		  </div>
+		</div>
+    </main>
+  </body>
+</html>
